@@ -12,7 +12,7 @@ public class Consumer extends Thread {
     public void run() {
         log.info("Consumer Created : {}", Thread.currentThread().getName());
         while (true) {
-            if (counter.hasReachedLowerLimit()) {
+            if (counter.hasReachedLimit()) {
                 return;
             }
             counter.decrement();

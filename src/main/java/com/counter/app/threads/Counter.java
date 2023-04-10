@@ -16,7 +16,7 @@ public class Counter {
     private final ThreadTimestampDataService threadTimestampDataService;
 
     public synchronized void increment() {
-        if (hasReachedUpperLimit()) {
+        if (hasReachedLimit()) {
             return;
         }
         int incrementedValue = counter.incrementAndGet();
@@ -28,7 +28,7 @@ public class Counter {
     }
 
     public synchronized void decrement() {
-        if (hasReachedLowerLimit()) {
+        if (hasReachedLimit()) {
             return;
         }
         int decrementedValue = counter.decrementAndGet();
@@ -39,12 +39,8 @@ public class Counter {
         log.info("Consumer : {}, Decreased Counter : {}", Thread.currentThread().getName(), decrementedValue);
     }
 
-    public boolean hasReachedUpperLimit() {
-        return counter.get() == 100;
-    }
-
-    public boolean hasReachedLowerLimit() {
-        return counter.get() == 0;
+    public boolean hasReachedLimit() {
+        return counter.get() == 100 || counter.get() == 0;
     }
 
     private void logThreadCounterData(int counter, String threadType) {

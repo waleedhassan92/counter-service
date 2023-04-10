@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 
 @Slf4j
 @Service
@@ -21,9 +21,9 @@ public class RequestDataServiceImpl implements RequestDataService {
     }
 
     private RequestLog createEntity(String payload) {
-        RequestLog log = new RequestLog();
-        log.setRequest(payload);
-        log.setTimestamp(new Date());
-        return log;
+        return RequestLog.builder()
+                .request(payload)
+                .timestamp(OffsetDateTime.now())
+                .build();
     }
 }

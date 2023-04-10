@@ -12,7 +12,7 @@ public class Producer extends Thread {
     public void run() {
         log.info("Producer Created : {}", Thread.currentThread().getName());
         while (true) {
-            if (counter.hasReachedUpperLimit()) {
+            if (counter.hasReachedLimit()) {
                 return;
             }
             counter.increment();

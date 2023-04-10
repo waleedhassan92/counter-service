@@ -5,7 +5,7 @@ import com.counter.app.data.repositories.ThreadTimestampRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 
 @Component
 @RequiredArgsConstructor
@@ -19,10 +19,10 @@ public class ThreadTimestampDataServiceImpl implements ThreadTimestampDataServic
     }
 
     private ThreadTimestamp createEntity(String threadName, Integer counter) {
-        ThreadTimestamp log = new ThreadTimestamp();
-        log.setThreadName(threadName);
-        log.setCounter(counter);
-        log.setTimestamp(new Date());
-        return log;
+        return ThreadTimestamp.builder()
+                .threadName(threadName)
+                .counter(counter)
+                .timestamp(OffsetDateTime.now())
+                .build();
     }
 }
