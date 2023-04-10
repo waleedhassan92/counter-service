@@ -36,7 +36,7 @@ public final class AppServiceImpl implements AppService {
         logRequest(request);
         validateRequest(request);
 
-        if (isLimitReached()) {
+        if (counter.hasReachedLimit()) {
             return ResponseBuilderFactory.buildCreateApiSuccessResponse(ResponseMessage.LIMIT_REACHED_MESSAGE);
         }
 
@@ -67,10 +67,6 @@ public final class AppServiceImpl implements AppService {
                 || request.getConsumers() < 0) {
             throw new RequestValidationException(Errors.NEGATIVE_NUMBER_NOT_ALLOWED);
         }
-    }
-
-    private boolean isLimitReached() {
-        return counter.hasReachedUpperLimit() || counter.hasReachedLowerLimit();
     }
 
     private void createThreads(Integer producers, Integer consumers) {
