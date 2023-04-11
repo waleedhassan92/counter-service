@@ -20,12 +20,14 @@ public class AppController {
 
     private final AppService appService;
 
+    // Endpoint to create consumer and producer threads
     @PostMapping(value = "/create")
     public ResponseEntity<Response> create(@RequestBody Request request) {
         log.info("Create Request Received : {}", request.toString());
         return appService.process(request);
     }
 
+    // Endpoint to reset the counter value
     @PostMapping(value = "/reset")
     public ResponseEntity<Response> reset(@RequestParam("counter") Integer counter) {
         log.info("Reset Request Received. Counter : {}", counter);

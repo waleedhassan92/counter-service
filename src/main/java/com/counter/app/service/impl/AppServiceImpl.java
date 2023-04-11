@@ -5,6 +5,7 @@ import com.counter.app.exceptions.RequestValidationException;
 import com.counter.app.models.pojo.Request;
 import com.counter.app.models.response.Response;
 import com.counter.app.service.AppService;
+import com.counter.app.service.ThreadInitializerService;
 import com.counter.app.threads.Consumer;
 import com.counter.app.threads.Counter;
 import com.counter.app.threads.Producer;
@@ -29,6 +30,7 @@ public final class AppServiceImpl implements AppService {
     private final RequestDataService requestDataService;
     private final Counter counter;
     private final ObjectMapper mapper;
+    private final ThreadInitializerService threadInitializerService;
 
     @Override
     public ResponseEntity<Response> process(Request request) {
@@ -52,6 +54,7 @@ public final class AppServiceImpl implements AppService {
         return ResponseBuilderFactory.buildResetApiSuccessResponse(value);
     }
 
+    // Logging incoming requests in DB
     private void logRequest(Request request) {
         try {
             String jsonRequest = mapper.writeValueAsString(request);
@@ -62,6 +65,7 @@ public final class AppServiceImpl implements AppService {
         }
     }
 
+    // Validating request for non negative values
     private void validateRequest(Request request) {
         if (request.getProducers() < 0
                 || request.getConsumers() < 0) {
@@ -70,13 +74,7 @@ public final class AppServiceImpl implements AppService {
     }
 
     private void createThreads(Integer producers, Integer consumers) {
-        List<Thread> threads = new ArrayList<>();
-        for (int i = 0; i < producers; i++) {
-            threads.add(new Producer(counter));
-        }
-        for (int i = 0; i < consumers; i++) {
-            threads.add(new Consumer(counter));
-        }
-        threads.forEach(Thread::start);
+        threadInitializerService.initializeProducers(producers, counter);
+        threadInitializerService.initializeConsumer(consumers, counter);
     }
 }
