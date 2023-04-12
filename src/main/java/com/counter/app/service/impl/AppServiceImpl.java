@@ -74,7 +74,12 @@ public final class AppServiceImpl implements AppService {
     }
 
     private void createThreads(Integer producers, Integer consumers) {
-        threadInitializerService.initializeProducers(producers, counter);
-        threadInitializerService.initializeConsumer(consumers, counter);
+        for (int i = 0; i < producers; i++) {
+            threadInitializerService.initializeProducers(counter);
+        }
+
+        for (int i = 0; i < consumers; i++) {
+            threadInitializerService.initializeConsumer(counter);
+        }
     }
 }

@@ -11,17 +11,13 @@ public class ThreadInitializerService {
 
     // Creating Producer threads asynchronously
     @Async
-    public void initializeProducers(Integer producers, Counter counter) {
-        for (int i = 0; i < producers; i++) {
-            new Producer(counter).start();
-        }
+    public void initializeProducers(Counter counter) {
+        new Producer(counter).start();
     }
 
     // Creating Consumer threads asynchronously
     @Async
-    public void initializeConsumer(Integer consumers, Counter counter) {
-        for (int i = 0; i < consumers; i++) {
-            new Consumer(counter).start();
-        }
+    public void initializeConsumer(Counter counter) {
+        new Consumer(counter).start();
     }
 }
